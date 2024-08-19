@@ -86,4 +86,12 @@
             </plugins>
         </pluginManagement>
     </build>
+    <!-- All your other configuration -->
+    <distributionManagement>
+        <repository>
+            <id>io.cloudrepo</id> <!-- Must Match the Unique Identifier in settings.xml -->
+            <name>OpenSource Repo</name>
+            <url>https://end2endlogic.mycloudrepo.io/repositories/end2endlogic-opensource-release</url>
+        </repository>
+    </distributionManagement>
 </project>
