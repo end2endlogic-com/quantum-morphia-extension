@@ -9,7 +9,7 @@ import io.quarkus.runtime.annotations.ConfigRoot;
 import java.util.Map;
 
 @ConfigRoot(name = "morphia", phase = RUN_TIME)
-public class MorphiaConfig {
+public class QuarkusMorphiaConfig {
 
     /**
      * The default Mapper configuration.

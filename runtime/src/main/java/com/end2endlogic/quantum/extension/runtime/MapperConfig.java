@@ -2,13 +2,14 @@ package com.end2endlogic.quantum.extension.runtime;
 
 import static com.end2endlogic.quantum.extension.runtime.Discriminator.simpleName;
 
-import dev.morphia.annotations.Embedded;
+
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Property;
+import dev.morphia.config.ManualMorphiaConfig;
+import dev.morphia.config.MorphiaConfig;
 import dev.morphia.mapping.DateStorage;
 import dev.morphia.mapping.DiscriminatorFunction;
-import dev.morphia.mapping.MapperOptions;
-import dev.morphia.mapping.MapperOptions.PropertyDiscovery;
+
 import io.quarkus.runtime.annotations.ConfigGroup;
 import io.quarkus.runtime.annotations.ConfigItem;
 import java.util.List;
@@ -105,7 +106,6 @@ public class MapperConfig {
      * missing/empty, no automatic mapping will be performed.
      *
      * @see Entity
-     * @see Embedded
      */
     @ConfigItem
     public Optional<List<String>> packages;
@@ -116,13 +116,7 @@ public class MapperConfig {
     @ConfigItem(defaultValue = "false")
     public boolean mapSubPackages;
 
-    /**
-     * Specifies how properties of an entity are discovered.
-     *
-     * @see PropertyDiscovery
-     */
-    @ConfigItem(defaultValue = "fields")
-    public PropertyDiscovery propertyDiscovery = PropertyDiscovery.FIELDS;
+
 
     /**
      * The strategy to use when calculating collection names for entities without an explicitly mapped property name.
@@ -144,20 +138,17 @@ public class MapperConfig {
     @ConfigItem(defaultValue = "false")
     public boolean storeNulls;
 
-    public MapperOptions toMapperOptions() {
-        return MapperOptions.builder()
-            .autoImportModels(autoImportModels)
+    public MorphiaConfig toMorphiaConfig() {
+        return ManualMorphiaConfig.configure()
             .collectionNaming(collectionNaming.convert())
             .dateStorage(dateStorage)
             .discriminator(discriminator.convert())
             .discriminatorKey(discriminatorKey)
             .enablePolymorphicQueries(enablePolymorphicQueries)
             .ignoreFinals(ignoreFinals)
-            .mapSubPackages(mapSubPackages)
-            .propertyDiscovery(propertyDiscovery)
             .propertyNaming(propertyNaming.convert())
             .storeEmpties(storeEmpties)
-            .storeNulls(storeNulls)
-            .build();
+            .storeNulls(storeNulls);
+
     }
 }
