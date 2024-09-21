@@ -25,7 +25,8 @@ public class MorphiaRecorder {
             ClassLoader contextClassLoader = Thread.currentThread()
                     .getContextClassLoader();
             MongoClient mongoClient = mongoClientSupplier.get();
-            MorphiaConfig morphiaConfig = quarkusMorphiaConfig.getMapperConfig(clientName).toMorphiaConfig();
+            //MorphiaConfig morphiaConfig = quarkusMorphiaConfig.getMapperConfig(clientName).toMorphiaConfig();
+            MorphiaConfig morphiaConfig = quarkusMorphiaConfig.mapperConfigs.get(clientName).toMorphiaConfig();
 
             MorphiaDatastore datastore = new MorphiaDatastore(mongoClient, morphiaConfig);
             List<String> packages = morphiaConfig.packages();

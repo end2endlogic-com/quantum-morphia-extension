@@ -6,16 +6,20 @@ import com.end2endlogic.quantum.extension.runtime.MapperConfig;
 import io.quarkus.mongodb.runtime.MongoClientBeanUtil;
 import io.quarkus.runtime.annotations.ConfigItem;
 import io.quarkus.runtime.annotations.ConfigRoot;
+import io.smallrye.config.ConfigMapping;
+
+import java.util.HashMap;
 import java.util.Map;
 
-@ConfigRoot(name = "morphia", phase = RUN_TIME)
-public class QuarkusMorphiaConfig {
+@ConfigMapping(prefix="quarkus.morphia")
+@ConfigRoot(phase = RUN_TIME)
+public interface QuarkusMorphiaConfig {
 
     /**
      * The default Mapper configuration.
      */
     @ConfigItem(name = ConfigItem.PARENT)
-    public MapperConfig defaultMapperConfig;
+    public MapperConfig defaultMapperConfig = new MapperConfig();
 
     /**
      * Configures additional {@code @Mapper} configurations.
@@ -42,11 +46,11 @@ public class QuarkusMorphiaConfig {
      * </pre>
      */
     @ConfigItem(name = ConfigItem.PARENT)
-    public Map<String, MapperConfig> mapperConfigs;
+    public Map<String, MapperConfig> mapperConfigs = new HashMap<>() {};
 
-    public MapperConfig getMapperConfig(String clientName) {
+   /* public MapperConfig getMapperConfig(String clientName) {
         return MongoClientBeanUtil.isDefault(clientName)
             ? defaultMapperConfig
             : mapperConfigs.get(clientName);
-    }
+    } */
 }
