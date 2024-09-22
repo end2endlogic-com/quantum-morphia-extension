@@ -1,61 +1,54 @@
 package com.end2endlogic.quantum.extension.runtime;
 
-import static com.end2endlogic.quantum.extension.runtime.Discriminator.simpleName;
-
-
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Property;
-import dev.morphia.config.ManualMorphiaConfig;
-import dev.morphia.config.MorphiaConfig;
 import dev.morphia.mapping.DateStorage;
 import dev.morphia.mapping.DiscriminatorFunction;
-
 import io.quarkus.runtime.annotations.ConfigGroup;
-import io.quarkus.runtime.annotations.ConfigItem;
+import io.smallrye.config.WithDefault;
 import java.util.List;
 import java.util.Optional;
 
 @ConfigGroup
-public class MapperConfig {
+public interface MapperConfig {
 
     /**
      * If critter is present, auto import the generated model information created by
      * <a href="https://morphia.dev/critter/4.4/index.html">critter</a>.
      */
-    @ConfigItem(defaultValue = "false")
-    public boolean autoImportModels = false;
+   @WithDefault("false")
+   boolean autoImportModels();
 
     /**
      * The strategy to use when calculating collection names for entities without an explicitly mapped collection name.
      *
      * @see Entity
      */
-    @ConfigItem(defaultValue = "camelCase")
-    public NamingStrategy collectionNaming = NamingStrategy.camelCase;
+   @WithDefault("camelCase")
+   NamingStrategy collectionNaming();
 
     /**
      * Create collection caps.
      */
-    @ConfigItem
-    public boolean createCaps = false;
+    @WithDefault("false")
+    boolean createCaps();
 
     /**
      * Create mapped indexes.
      */
-    @ConfigItem
-    public boolean createIndexes = false;
+   @WithDefault("false")
+   boolean createIndexes();
 
     /**
      * Enable mapped document validation.
      */
-    @ConfigItem
-    public boolean createValidators = false;
+   @WithDefault("false")
+   boolean createValidators();
 
     /**
      * The database to use
      */
-    @ConfigItem
-    public String database;
+    String database();
 
     /**
      * Specifies how dates should be stored in the database. This value should only be changed to support legacy systems which
@@ -63,8 +56,8 @@ public class MapperConfig {
      *
      * @see DateStorage
      */
-    @ConfigItem(defaultValue = "utc")
-    public DateStorage dateStorage = DateStorage.UTC;
+    @WithDefault("utc")
+    DateStorage dateStorage();
 
     /**
      * The function to use when calculating an entity's discriminator value. Possible values include:
@@ -79,26 +72,26 @@ public class MapperConfig {
      *
      * @see DiscriminatorFunction
      */
-    @ConfigItem(defaultValue = "simpleName")
-    public Discriminator discriminator = simpleName;
+    @WithDefault("simpleName")
+    Discriminator discriminator();
 
     /**
      * The key to use when storing an entity's discriminator value
      */
-    @ConfigItem(defaultValue = "_t")
-    public String discriminatorKey = "_t";
+    @WithDefault("_t")
+    String discriminatorKey();
 
     /**
      * Should queries be updated to include subtypes when querying for a specific type
      */
-    @ConfigItem(defaultValue = "true")
-    public boolean enablePolymorphicQueries;
+   @WithDefault("true")
+   boolean enablePolymorphicQueries();
 
     /**
      * Should final properties be serialized
      */
-    @ConfigItem(defaultValue = "true")
-    public boolean ignoreFinals;
+    @WithDefault("false")
+    boolean ignoreFinals();
 
     /**
      * List the packages to automatically map. To map any subpackages, simply include {@code .*} on the end of the name. e.g.
@@ -107,14 +100,14 @@ public class MapperConfig {
      *
      * @see Entity
      */
-    @ConfigItem
-    public Optional<List<String>> packages;
+
+    Optional<List<String>> packages();
 
     /**
      * Should "subpackages" also be mapped when mapping a specific package
      */
-    @ConfigItem(defaultValue = "false")
-    public boolean mapSubPackages;
+    @WithDefault("true")
+    boolean mapSubPackages();
 
 
 
@@ -123,22 +116,22 @@ public class MapperConfig {
      *
      * @see Property
      */
-    @ConfigItem(defaultValue = "identity")
-    public NamingStrategy propertyNaming = NamingStrategy.identity;
+    @WithDefault("identity")
+    public NamingStrategy propertyNaming();
 
     /**
      * Should empty Lists/Maps/Sets be serialized
      */
-    @ConfigItem(defaultValue = "false")
-    public boolean storeEmpties;
+    @WithDefault("false")
+    public boolean storeEmpties();
 
     /**
      * Should null properties be serialized
      */
-    @ConfigItem(defaultValue = "false")
-    public boolean storeNulls;
+    @WithDefault("false")
+    public boolean storeNulls();
 
-    public MorphiaConfig toMorphiaConfig() {
+   /* public MorphiaConfig toMorphiaConfig() {
         return ManualMorphiaConfig.configure()
             .collectionNaming(collectionNaming.convert())
             .dateStorage(dateStorage)
@@ -150,5 +143,5 @@ public class MapperConfig {
             .storeEmpties(storeEmpties)
             .storeNulls(storeNulls);
 
-    }
+    } */
 }

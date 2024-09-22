@@ -1,10 +1,12 @@
 package com.end2endlogic.quantum.extension;
 
 
+import com.end2endlogic.quantum.extension.runtime.MapperConfig;
 import com.mongodb.client.MongoClient;
 import dev.morphia.Datastore;
 import dev.morphia.Morphia;
 import dev.morphia.MorphiaDatastore;
+import dev.morphia.config.ManualMorphiaConfig;
 import dev.morphia.config.MorphiaConfig;
 import io.quarkus.runtime.annotations.Recorder;
 import java.util.List;
@@ -26,7 +28,17 @@ public class MorphiaRecorder {
                     .getContextClassLoader();
             MongoClient mongoClient = mongoClientSupplier.get();
             //MorphiaConfig morphiaConfig = quarkusMorphiaConfig.getMapperConfig(clientName).toMorphiaConfig();
-            MorphiaConfig morphiaConfig = quarkusMorphiaConfig.mapperConfigs.get(clientName).toMorphiaConfig();
+            MapperConfig mapperConfig = quarkusMorphiaConfig.mapperConfigs().get(clientName);
+            MorphiaConfig morphiaConfig =  ManualMorphiaConfig.configure()
+                    .collectionNaming(mapperConfig.collectionNaming().convert())
+                    .dateStorage(mapperConfig.dateStorage())
+                    .discriminator(mapperConfig.discriminator().convert())
+                    .discriminatorKey(mapperConfig.discriminatorKey())
+                    .enablePolymorphicQueries(mapperConfig.enablePolymorphicQueries())
+                    .ignoreFinals(mapperConfig.ignoreFinals())
+                    .propertyNaming(mapperConfig.propertyNaming().convert())
+                    .storeEmpties(mapperConfig.storeEmpties())
+                    .storeNulls(mapperConfig.storeNulls());
 
             MorphiaDatastore datastore = new MorphiaDatastore(mongoClient, morphiaConfig);
             List<String> packages = morphiaConfig.packages();

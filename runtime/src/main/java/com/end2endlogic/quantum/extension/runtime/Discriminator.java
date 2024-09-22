@@ -10,28 +10,28 @@ import dev.morphia.mapping.DiscriminatorFunction;
 public enum Discriminator {
     className {
         @Override
-        DiscriminatorFunction convert() {
+        public DiscriminatorFunction convert() {
             return className();
         }
     },
     lowerClassName {
         @Override
-        DiscriminatorFunction convert() {
+        public DiscriminatorFunction convert() {
             return lowerClassName();
         }
     },
     lowerSimpleName {
         @Override
-        DiscriminatorFunction convert() {
+        public DiscriminatorFunction convert() {
             return lowerSimpleName();
         }
     },
     simpleName {
         @Override
-        DiscriminatorFunction convert() {
+        public DiscriminatorFunction convert() {
             return simpleName();
         }
     };
 
-    abstract DiscriminatorFunction convert();
+    public abstract DiscriminatorFunction convert();
 }
