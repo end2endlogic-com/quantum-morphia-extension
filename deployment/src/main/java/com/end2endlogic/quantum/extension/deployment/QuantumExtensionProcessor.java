@@ -1,6 +1,7 @@
 package com.end2endlogic.quantum.extension.deployment;
 
 import com.end2endlogic.quantum.extension.QuarkusMorphiaConfig;
+import dev.morphia.MorphiaDatastore;
 import dev.morphia.annotations.*;
 import io.quarkus.deployment.annotations.BuildStep;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
@@ -28,7 +29,7 @@ import org.jboss.jandex.Indexer;
 import org.jboss.jandex.JarIndexer;
 import org.jetbrains.annotations.NotNull;
 
-import dev.morphia.Datastore;
+import dev.morphia.MorphiaDatastore;
 
 import dev.morphia.mapping.codec.references.ReferenceCodec;
 import dev.morphia.config.MorphiaConfig;
@@ -76,7 +77,7 @@ class QuantumExtensionProcessor {
             BuildProducer<ServiceProviderBuildItem> items
     ) {
         syntheticBeanBuildItemBuildProducer.produce(
-            SyntheticBeanBuildItem.configure(Datastore.class)
+            SyntheticBeanBuildItem.configure(MorphiaDatastore.class)
                 .scope(ApplicationScoped.class)
                 .supplier(
                     recorder.datastoreSupplier(
@@ -97,7 +98,7 @@ class QuantumExtensionProcessor {
             String clientName = mongoClientName.getName();
 
             SyntheticBeanBuildItem.ExtendedBeanConfigurator configurator =
-                SyntheticBeanBuildItem.configure(Datastore.class)
+                SyntheticBeanBuildItem.configure(MorphiaDatastore.class)
                     .scope(ApplicationScoped.class)
                     .supplier(
                         recorder.datastoreSupplier(
@@ -246,7 +247,7 @@ class QuantumExtensionProcessor {
     @NotNull
     private Index indexJar() throws IOException {
         URL location =
-            Datastore.class.getProtectionDomain().getCodeSource().getLocation();
+            MorphiaDatastore.class.getProtectionDomain().getCodeSource().getLocation();
         Indexer indexer = new Indexer();
         JarIndexer.createJarIndex(
             new File(location.getFile()),

@@ -23,6 +23,11 @@
             <groupId>dev.morphia.morphia</groupId>
             <artifactId>morphia-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-rest-jackson</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -53,6 +58,7 @@
                             <version>${quarkus.version}</version>
                         </path>
                     </annotationProcessorPaths>
+                    <release>${maven.compiler.release}</release>
                 </configuration>
             </plugin>
         </plugins>

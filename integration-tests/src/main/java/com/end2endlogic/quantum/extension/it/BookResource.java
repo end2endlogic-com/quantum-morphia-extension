@@ -11,7 +11,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.Response;
 
-import dev.morphia.Datastore;
+import dev.morphia.MorphiaDatastore;
 import com.end2endlogic.quantum.extension.it.models2.Book;
 import io.smallrye.common.annotation.Blocking;
 
@@ -20,7 +20,7 @@ import io.smallrye.common.annotation.Blocking;
 public class BookResource {
 
     @Inject
-    Datastore datastore;
+    MorphiaDatastore datastore;
 
     @GET
     public List<Book> getBooks() {

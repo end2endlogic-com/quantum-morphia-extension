@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 import com.end2endlogic.quantum.extension.it.models.Author;
+import dev.morphia.mapping.IndexType;
 import org.bson.types.ObjectId;
 
 import dev.morphia.annotations.Entity;
@@ -14,7 +15,7 @@ import dev.morphia.annotations.Indexed;
 import dev.morphia.annotations.Indexes;
 import dev.morphia.annotations.Reference;
 import dev.morphia.annotations.Validation;
-import dev.morphia.utils.IndexType;
+
 
 @Entity(value = "books")
 @Validation("{ title: { $exists:  true } }")

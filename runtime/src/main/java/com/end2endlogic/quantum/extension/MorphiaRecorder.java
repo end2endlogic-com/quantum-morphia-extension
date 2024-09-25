@@ -3,8 +3,6 @@ package com.end2endlogic.quantum.extension;
 
 import com.end2endlogic.quantum.extension.runtime.MapperConfig;
 import com.mongodb.client.MongoClient;
-import dev.morphia.Datastore;
-import dev.morphia.Morphia;
 import dev.morphia.MorphiaDatastore;
 import dev.morphia.config.ManualMorphiaConfig;
 import dev.morphia.config.MorphiaConfig;
@@ -16,7 +14,7 @@ import java.util.regex.Pattern;
 @Recorder
 public class MorphiaRecorder {
 
-    public Supplier<Datastore> datastoreSupplier(
+    public Supplier<MorphiaDatastore> datastoreSupplier(
         Supplier<MongoClient> mongoClientSupplier,
         QuarkusMorphiaConfig quarkusMorphiaConfig,
         List<String> entities,
@@ -29,6 +27,9 @@ public class MorphiaRecorder {
             MongoClient mongoClient = mongoClientSupplier.get();
             //MorphiaConfig morphiaConfig = quarkusMorphiaConfig.getMapperConfig(clientName).toMorphiaConfig();
             MapperConfig mapperConfig = quarkusMorphiaConfig.mapperConfigs().get(clientName);
+            if (mapperConfig == null) {
+                mapperConfig = quarkusMorphiaConfig.defaultMapperConfig();
+            }
             MorphiaConfig morphiaConfig =  ManualMorphiaConfig.configure()
                     .collectionNaming(mapperConfig.collectionNaming().convert())
                     .dateStorage(mapperConfig.dateStorage())
@@ -38,7 +39,13 @@ public class MorphiaRecorder {
                     .ignoreFinals(mapperConfig.ignoreFinals())
                     .propertyNaming(mapperConfig.propertyNaming().convert())
                     .storeEmpties(mapperConfig.storeEmpties())
+                    .applyCaps(mapperConfig.createCaps())
+                    .database(mapperConfig.database())
+                    .applyIndexes(mapperConfig.createIndexes())
                     .storeNulls(mapperConfig.storeNulls());
+                    if (mapperConfig.packages() != null || !mapperConfig.packages().isEmpty()){
+                        morphiaConfig = morphiaConfig.packages(mapperConfig.packages());
+                    }
 
             MorphiaDatastore datastore = new MorphiaDatastore(mongoClient, morphiaConfig);
             List<String> packages = morphiaConfig.packages();

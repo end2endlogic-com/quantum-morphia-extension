@@ -16,7 +16,9 @@
 */
 package com.end2endlogic.quantum.extension.it;
 
-import dev.morphia.Datastore;
+
+import dev.morphia.MorphiaDatastore;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Default;
 import jakarta.ws.rs.Produces;
@@ -34,7 +36,7 @@ import java.util.stream.Collectors;
 public class QuantumExtensionResource {
     @Inject
     @Default
-    Datastore datastore;
+    MorphiaDatastore datastore;
 
     @GET
     public String hello() {
@@ -45,10 +47,14 @@ public class QuantumExtensionResource {
     @Path("/mapping")
     @Produces("application/text")
     public Response mapping() {
-        var list = datastore.getMapper().getMappedEntities().stream()
+        datastore.getMapper().getConfig().packages().forEach(System.out::println);
+        var entities = datastore.getMapper().getMappedEntities();
+        var list = entities.stream()
                 .map(EntityModel::getName).sorted()
                 .collect(Collectors.joining(", "));
 
         return Response.ok(list).build();
     }
+
+
 }
