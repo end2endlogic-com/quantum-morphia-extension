@@ -55,4 +55,6 @@ public interface QuarkusMorphiaConfig {
             ? defaultMapperConfig
             : mapperConfigs.get(clientName);
     } */
+
+
 }
