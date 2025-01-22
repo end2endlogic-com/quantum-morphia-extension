@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.end2endlogic</groupId>
         <artifactId>quantum-extension-parent</artifactId>
-        <version>1.1.1</version>
+        <version>1.1.2</version>
     </parent>
     <artifactId>quantum-extension-integration-tests</artifactId>
     <name>Quantum Extension - Integration Tests</name>
@@ -105,4 +105,11 @@
             </properties>
         </profile>
     </profiles>
+    <distributionManagement>
+        <repository>
+            <id>io.cloudrepo</id> <!-- Must Match the Unique Identifier in settings.xml -->
+            <name>OpenSource Repo</name>
+            <url>https://end2endlogic.mycloudrepo.io/repositories/end2endlogic-opensource-release</url>
+        </repository>
+    </distributionManagement>
 </project>

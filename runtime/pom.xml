@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <groupId>com.end2endlogic</groupId>
         <artifactId>quantum-extension-parent</artifactId>
-        <version>1.1.1</version>
+        <version>1.1.2</version>
     </parent>
     <artifactId>quantum-extension</artifactId>
     <name>Quantum Extension - Runtime</name>
@@ -63,4 +62,11 @@
             </plugin>
         </plugins>
     </build>
+    <distributionManagement>
+        <repository>
+            <id>io.cloudrepo</id> <!-- Must Match the Unique Identifier in settings.xml -->
+            <name>OpenSource Repo</name>
+            <url>https://end2endlogic.mycloudrepo.io/repositories/end2endlogic-opensource-release</url>
+        </repository>
+    </distributionManagement>
 </project>
