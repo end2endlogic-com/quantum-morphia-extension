@@ -62,14 +62,8 @@ public interface MapperConfig {
 
     /**
      * The function to use when calculating an entity's discriminator value. Possible values include:
-     * <ul>
-     * <ol>
      * built-in functions defined on {@link DiscriminatorFunction}
-     * </ol>
-     * <ol>
      * the class names of a type extending {@link DiscriminatorFunction}
-     * </ol>
-     * </ul>
      *
      * @see DiscriminatorFunction
      */

@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.end2endlogic</groupId>
-        <artifactId>quantum-extension-parent</artifactId>
+        <artifactId>quantum-morphia-extension-parent</artifactId>
         <version>1.1.2</version>
     </parent>
     <artifactId>quantum-extension</artifactId>
@@ -13,14 +13,17 @@
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-arc</artifactId>
+            <version>${quarkus.version}</version>
         </dependency>
         <dependency>
           <groupId>io.quarkus</groupId>
           <artifactId>quarkus-mongodb-client</artifactId>
+            <version>${quarkus.version}</version>
         </dependency>
         <dependency>
-            <groupId>dev.morphia.morphia</groupId>
+            <groupId>com.end2endlogic</groupId>
             <artifactId>morphia-core</artifactId>
+            <version>3.0.0</version>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -60,13 +63,90 @@
                     <release>${maven.compiler.release}</release>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.7.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>central</publishingServerId>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <gpgArguments>
+                        <arg>--pinentry-mode</arg>
+                        <arg>loopback</arg>
+                    </gpgArguments>
+                    <passphraseServerId>gpg.passphrase</passphraseServerId>
+                </configuration>
+            </plugin>
         </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>buildnumber-maven-plugin</artifactId>
+                    <version>3.2.1</version>
+                    <executions>
+                        <execution>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>create</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <doCheck>false</doCheck>
+                        <doUpdate>true</doUpdate>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>3.2.1</version>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <goals>
+                                <goal>jar-no-fork</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>3.11.2</version>
+                    <executions>
+                        <execution>
+                            <id>attach-javadocs</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
-    <distributionManagement>
+   <!-- <distributionManagement>
         <repository>
-            <id>io.cloudrepo</id> <!-- Must Match the Unique Identifier in settings.xml -->
+            <id>io.cloudrepo</id>
             <name>OpenSource Repo</name>
             <url>https://end2endlogic.mycloudrepo.io/repositories/end2endlogic-opensource-release</url>
         </repository>
-    </distributionManagement>
+    </distributionManagement> -->
 </project>

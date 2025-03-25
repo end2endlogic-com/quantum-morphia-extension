@@ -2,10 +2,38 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.end2endlogic</groupId>
-    <artifactId>quantum-extension-parent</artifactId>
+    <artifactId>quantum-morphia-extension-parent</artifactId>
     <version>1.1.2</version>
     <packaging>pom</packaging>
-    <name>Quantum Extension - Parent</name>
+
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>provides mongodb data source, and morphia via a quarkus extension</description>
+    <url>https://github.com/end2endlogic-com/quarkus-morphia-extension</url>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/end2endlogic-com/quarkus-morphia-extension</url>
+        <connection>scm:git:https://github.com/end2endlogic-com/quarkus-morphia-extension.git</connection>
+        <developerConnection>scm:git:https://github.com/end2endlogic-com/quarkus-morphia-extension.git</developerConnection>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>Michael Ingardia</name>
+            <email>mingardia@end2endlogic.com</email>
+            <organization>End2Endlogic.com</organization>
+            <organizationUrl>http://www.end2endlogic.com</organizationUrl>
+        </developer>
+    </developers>
+
+
 
     <modules>
         <module>deployment</module>
@@ -20,7 +48,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <quarkus.version>3.17.7</quarkus.version>
         <surefire-plugin.version>3.2.5</surefire-plugin.version>
-        <morphia.version>3.0.0-beta.40b</morphia.version>
+        <morphia.version>3.0.0</morphia.version>
     </properties>
 
     <dependencyManagement>
@@ -33,9 +61,9 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>dev.morphia.morphia</groupId>
+                <groupId>com.end2endlogic</groupId>
                 <artifactId>morphia-core</artifactId>
-                <version>${morphia.version}</version>
+                <version>3.0.0</version>
             </dependency>
             <dependency>
                 <groupId>com.end2endlogic</groupId>
@@ -46,6 +74,64 @@
     </dependencyManagement>
 
     <build>
+        <plugins>
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.7.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>central</publishingServerId>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <gpgArguments>
+                        <arg>--pinentry-mode</arg>
+                        <arg>loopback</arg>
+                    </gpgArguments>
+                    <passphraseServerId>gpg.passphrase</passphraseServerId>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.11.2</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -85,10 +171,10 @@
             </plugins>
         </pluginManagement>
     </build>
-    <!-- All your other configuration -->
+    <!-- All your other configuration
     <distributionManagement>
         <repository>
-            <id>io.cloudrepo</id> <!-- Must Match the Unique Identifier in settings.xml -->
+            <id>io.cloudrepo</id>
             <name>OpenSource Repo</name>
             <url>https://end2endlogic.mycloudrepo.io/repositories/end2endlogic-opensource-release</url>
         </repository>
@@ -99,5 +185,5 @@
             <name>End2EndLogic Repository</name>
             <url>https://end2endlogic.mycloudrepo.io/repositories/end2endlogic-opensource-release</url>
         </repository>
-    </repositories>
+    </repositories> -->
 </project>
