@@ -1,11 +1,6 @@
 package com.end2endlogic.quantum.extension;
 
-
-
 import com.end2endlogic.quantum.extension.runtime.MapperConfig;
-
-import io.quarkus.runtime.annotations.ConfigDocMapKey;
-import io.quarkus.runtime.annotations.ConfigItem;
 import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
 import io.smallrye.config.ConfigMapping;
