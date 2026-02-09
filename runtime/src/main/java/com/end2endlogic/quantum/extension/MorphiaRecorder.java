@@ -6,6 +6,7 @@ import com.mongodb.client.MongoClient;
 import dev.morphia.MorphiaDatastore;
 import dev.morphia.config.ManualMorphiaConfig;
 import dev.morphia.config.MorphiaConfig;
+import io.quarkus.runtime.RuntimeValue;
 import io.quarkus.runtime.annotations.Recorder;
 import java.util.List;
 import java.util.function.Supplier;
@@ -14,14 +15,20 @@ import java.util.regex.Pattern;
 @Recorder
 public class MorphiaRecorder {
 
+    private final RuntimeValue<QuarkusMorphiaConfig> quarkusMorphiaConfigValue;
+
+    public MorphiaRecorder(RuntimeValue<QuarkusMorphiaConfig> quarkusMorphiaConfig) {
+        this.quarkusMorphiaConfigValue = quarkusMorphiaConfig;
+    }
+
     public Supplier<MorphiaDatastore> datastoreSupplier(
         Supplier<MongoClient> mongoClientSupplier,
-        QuarkusMorphiaConfig quarkusMorphiaConfig,
         List<String> entities,
         String clientName
     ) {
 
         return () -> {
+            QuarkusMorphiaConfig quarkusMorphiaConfig = quarkusMorphiaConfigValue.getValue();
             ClassLoader contextClassLoader = Thread.currentThread()
                     .getContextClassLoader();
             MongoClient mongoClient = mongoClientSupplier.get();

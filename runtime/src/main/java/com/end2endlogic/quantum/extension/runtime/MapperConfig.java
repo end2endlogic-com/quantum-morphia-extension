@@ -5,7 +5,7 @@ import dev.morphia.annotations.Property;
 import dev.morphia.mapping.DateStorage;
 import dev.morphia.mapping.DiscriminatorFunction;
 import io.quarkus.runtime.annotations.ConfigGroup;
-import io.quarkus.runtime.annotations.ConfigItem;
+
 import io.smallrye.config.WithDefault;
 import java.util.List;
 import java.util.Optional;

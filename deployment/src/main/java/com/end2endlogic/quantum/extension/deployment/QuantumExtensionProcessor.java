@@ -1,12 +1,11 @@
 package com.end2endlogic.quantum.extension.deployment;
 
-import com.end2endlogic.quantum.extension.QuarkusMorphiaConfig;
 import dev.morphia.MorphiaDatastore;
 import dev.morphia.annotations.*;
 import io.quarkus.deployment.annotations.BuildStep;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
 
-import static io.quarkus.mongodb.runtime.MongoClientBeanUtil.DEFAULT_MONGOCLIENT_NAME;
+import static io.quarkus.mongodb.runtime.MongoConfig.DEFAULT_CLIENT_NAME;
 import static java.util.List.of;
 
 import java.io.File;
@@ -48,7 +47,7 @@ import io.quarkus.mongodb.MongoClientName;
 import io.quarkus.mongodb.deployment.MongoClientNameBuildItem;
 import io.quarkus.mongodb.runtime.MongoClientBeanUtil;
 import io.quarkus.mongodb.runtime.MongoClientRecorder;
-import io.quarkus.mongodb.runtime.MongodbConfig;
+import io.quarkus.mongodb.runtime.MongoConfig;
 
 @SuppressWarnings("removal")
 class QuantumExtensionProcessor {
@@ -68,9 +67,7 @@ class QuantumExtensionProcessor {
     @Record(ExecutionTime.RUNTIME_INIT)
     public void datastoreRecorder(
             MongoClientRecorder clientRecorder,
-            MongodbConfig mongodbConfig,
             MorphiaRecorder recorder,
-            QuarkusMorphiaConfig config,
             MorphiaEntitiesBuildItem entitiesBuildItem,
             List<MongoClientNameBuildItem> mongoClientNames,
             BuildProducer<SyntheticBeanBuildItem> syntheticBeanBuildItemBuildProducer,
@@ -82,12 +79,10 @@ class QuantumExtensionProcessor {
                 .supplier(
                     recorder.datastoreSupplier(
                         clientRecorder.mongoClientSupplier(
-                            DEFAULT_MONGOCLIENT_NAME,
-                            mongodbConfig
+                            DEFAULT_CLIENT_NAME
                         ),
-                        config,
                         entitiesBuildItem.getNames(),
-                        DEFAULT_MONGOCLIENT_NAME
+                        DEFAULT_CLIENT_NAME
                     )
                 )
                 .setRuntimeInit()
@@ -103,10 +98,8 @@ class QuantumExtensionProcessor {
                     .supplier(
                         recorder.datastoreSupplier(
                             clientRecorder.mongoClientSupplier(
-                                clientName,
-                                mongodbConfig
+                                clientName
                             ),
-                            config,
                             entitiesBuildItem.getNames(),
                             clientName
                         )
