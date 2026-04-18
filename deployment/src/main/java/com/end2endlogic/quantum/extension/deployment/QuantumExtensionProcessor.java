@@ -56,7 +56,7 @@ class QuantumExtensionProcessor {
         DotName.createSimple(Entity.class.getName())
     );
 
-    private static final String FEATURE = "quantum-extension";
+    private static final String FEATURE = "quantum-morphia-extension";
     public static final DotName MONGO_CLIENT_NAME = DotName.createSimple(
         MongoClientName.class.getName()
     );

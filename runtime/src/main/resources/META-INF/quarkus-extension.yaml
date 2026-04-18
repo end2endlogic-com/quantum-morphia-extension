@@ -2,7 +2,7 @@ name: End2Endlogic Quantum Extension
 #description: Do something useful.
 metadata:
   keywords:
-    - quantum-extension
+    - quantum-morphia-extension
     - end2endlogic
     - quantum-framework
   #  guide: ... # To create and publish this guide, see https://github.com/quarkiverse/quarkiverse/wiki#documenting-your-extension
