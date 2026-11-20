@@ -52,8 +52,11 @@ import io.quarkus.mongodb.runtime.MongoConfig;
 @SuppressWarnings("removal")
 class QuantumExtensionProcessor {
 
+    // Every annotation Morphia treats as mappable (Mapper.MAPPING_ANNOTATIONS). The runtime maps exactly the
+    // types collected here and no longer scans the classpath, so a missing annotation means missing entities.
     private static final List<DotName> MAPPED_TYPE_ANNOTATIONS = of(
-        DotName.createSimple(Entity.class.getName())
+        DotName.createSimple(Entity.class.getName()),
+        DotName.createSimple(ExternalEntity.class.getName())
     );
 
     private static final String FEATURE = "quantum-extension";
@@ -269,26 +272,29 @@ class QuantumExtensionProcessor {
         CombinedIndexBuildItem indexBuildItem,
         BuildProducer<ReflectiveClassBuildItem> reflectiveClasses
     ) {
-        ArrayList<String> list = new ArrayList<>();
-
+        // Morphia treats a class as mappable when it, a superclass or an interface carries a mapping
+        // annotation (Mapper#isMappable), so subclasses and implementors are collected as well as the
+        // annotated classes themselves. The runtime maps exactly this list and scans nothing.
+        java.util.LinkedHashSet<String> names = new java.util.LinkedHashSet<>();
         IndexView index = indexBuildItem.getIndex();
         for (DotName annotation : MAPPED_TYPE_ANNOTATIONS) {
-            var classes = index
-                .getKnownClasses()
+            index.getKnownClasses()
                 .stream()
                 .filter(info -> info.classAnnotation(annotation) != null)
-                .collect(Collectors.toList());
-            classes.forEach(info -> {
-                reflectiveClasses.produce(
-                    new ReflectiveClassBuildItem(
-                        true,
-                        true,
-                        info.name().toString()
-                    )
-                );
-                list.add(info.name().toString());
-            });
+                .forEach(info -> {
+                    names.add(info.name().toString());
+                    index.getAllKnownSubclasses(info.name())
+                        .forEach(sub -> names.add(sub.name().toString()));
+                    index.getAllKnownImplementors(info.name())
+                        .forEach(impl -> {
+                            names.add(impl.name().toString());
+                            index.getAllKnownSubclasses(impl.name())
+                                .forEach(sub -> names.add(sub.name().toString()));
+                        });
+                });
         }
+        ArrayList<String> list = new ArrayList<>(names);
+        list.forEach(name -> reflectiveClasses.produce(new ReflectiveClassBuildItem(true, true, name)));
 
         return new MorphiaEntitiesBuildItem(list);
     }

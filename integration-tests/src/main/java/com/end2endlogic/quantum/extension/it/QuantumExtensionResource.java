@@ -44,6 +44,36 @@ public class QuantumExtensionResource {
     }
 
     @GET
+    @Path("/mapped-types")
+    @Produces("application/text")
+    public Response mappedTypes() {
+        var list = datastore.getMapper().getMappedEntities().stream()
+                .map(model -> model.getType().getName()).sorted()
+                .collect(Collectors.joining(","));
+        return Response.ok(list).build();
+    }
+
+    @GET
+    @Path("/indexes/{collection}")
+    @Produces("application/text")
+    public Response indexes(@jakarta.ws.rs.PathParam("collection") String collection) {
+        var names = new java.util.ArrayList<String>();
+        datastore.getDatabase().getCollection(collection).listIndexes()
+                .forEach(index -> names.add(index.getString("name")));
+        java.util.Collections.sort(names);
+        return Response.ok(String.join(",", names)).build();
+    }
+
+    @GET
+    @Path("/collections")
+    @Produces("application/text")
+    public Response collections() {
+        var names = datastore.getDatabase().listCollectionNames().into(new java.util.ArrayList<>());
+        java.util.Collections.sort(names);
+        return Response.ok(String.join(",", names)).build();
+    }
+
+    @GET
     @Path("/mapping")
     @Produces("application/text")
     public Response mapping() {
