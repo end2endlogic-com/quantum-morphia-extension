@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.end2endlogic</groupId>
         <artifactId>quantum-morphia-extension-parent</artifactId>
-        <version>1.4.3-SNAPSHOT</version>
+        <version>1.4.2-SNAPSHOT</version>
     </parent>
     <artifactId>quantum-extension-deployment</artifactId>
     <name>${project.groupId}:${project.artifactId}</name>
@@ -66,6 +66,27 @@
                 <extensions>true</extensions>
                 <configuration>
                     <publishingServerId>central</publishingServerId>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <gpgArguments>
+                        <arg>--pinentry-mode</arg>
+                        <arg>loopback</arg>
+                    </gpgArguments>
+                    <passphraseServerId>gpg.passphrase</passphraseServerId>
                 </configuration>
             </plugin>
             <plugin>
